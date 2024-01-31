@@ -30,11 +30,26 @@ class AnnouncementController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'title' => 'required',
+            'description' => 'nullable',
+            'date' => 'required|date',
+            'company_id' => 'required|exists:companies,id',
+            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Add image validation rules
+        ]);
+
+        $imagePath = null;
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('announcements_images', 'public');
+        }
+
         Announcement::create([
             'title' => $request->title,
             'description' => $request->description,
             'date' => $request->date,
             'company_id' => $request->company_id,
+            'image' => $imagePath,
         ]);
 
         return redirect()->route('announcements.index')->with('success', 'Announcement created successfully');
@@ -62,11 +77,26 @@ class AnnouncementController extends Controller
      */
     public function update(Request $request, Announcement $announcement)
     {
+        $request->validate([
+            'title' => 'required',
+            'description' => 'nullable',
+            'date' => 'required|date',
+            'company_id' => 'required|exists:companies,id',
+            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Add image validation rules
+        ]);
+
+        $imagePath = $announcement->image;
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('announcements_images', 'public');
+        }
+
         $announcement->update([
             'title' => $request->title,
             'description' => $request->description,
             'date' => $request->date,
             'company_id' => $request->company_id,
+            'image' => $imagePath,
         ]);
 
         return redirect()->route('announcements.index')->with('success', 'Announcement updated successfully');
