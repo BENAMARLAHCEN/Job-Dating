@@ -10,6 +10,11 @@ class Company extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'industry','email','website','location',
+        'name', 'email', 'website', 'location', 'industry', 'logo',
     ];
+    
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
 }
