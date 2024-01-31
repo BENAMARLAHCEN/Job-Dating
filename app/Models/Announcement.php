@@ -12,4 +12,10 @@ class Announcement extends Model
     protected $fillable = [
         'title', 'description', 'date', 'company_id',
     ];
+    
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+
 }

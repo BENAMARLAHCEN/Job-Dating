@@ -12,8 +12,8 @@ class AnnouncementController extends Controller
      */
     public function index()
     {
-        $announcements = Announcement::all();
-        return view('admin.announcements.index', compact('announcements'));
+        $announcements = Announcement::with('company')->get();
+        return view('announcements.index', compact('announcements'));
     }
 
     /**
@@ -60,7 +60,8 @@ class AnnouncementController extends Controller
      */
     public function show(Announcement $announcement)
     {
-        return view('admin.announcements.show', compact('announcement'));
+        $announcement->load('company');
+        return view('announcements.show', compact('announcement'));
     }
 
     /**
