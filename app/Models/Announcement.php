@@ -10,12 +10,24 @@ class Announcement extends Model
     use HasFactory;
     
     protected $fillable = [
-        'title', 'description', 'date', 'company_id',
+        'title', 'description', 'date', 'company_id','image','skills',
     ];
-    
+
     public function company()
     {
         return $this->belongsTo(Company::class);
+    }
+
+    public function scopeFilter($query, array $filters) {
+        if($filters['skill'] ?? false) {
+            $query->where('skills', 'like', '%' . request('skill') . '%');
+        }
+
+        if($filters['search'] ?? false) {
+            $query->where('title', 'like', '%' . request('search') . '%')
+                ->orWhere('description', 'like', '%' . request('search') . '%')
+                ->orWhere('skills', 'like', '%' . request('search') . '%');
+        }
     }
 
 }
