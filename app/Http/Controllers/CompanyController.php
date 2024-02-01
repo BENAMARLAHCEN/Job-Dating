@@ -12,7 +12,7 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $companies = Company::all();
+        $companies = Company::latest()->paginate(6);
         return view('admin.companies.index', compact('companies'));
     }
 
@@ -35,14 +35,14 @@ class CompanyController extends Controller
             'website' => 'nullable|url',
             'location' => 'nullable|string',
             'industry' => 'required',
-            'logo' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+        
+        $logoName = time().'.'.$request->logo->extension();  
+         
+        $request->logo->move(public_path('logo'), $logoName);
+    
 
-        $logoPath = null;
-
-        if ($request->hasFile('logo')) {
-            $logoPath = $request->file('logo')->store('company_logos', 'public.images');
-        }
 
         Company::create([
             'name' => $request->name,
@@ -50,10 +50,10 @@ class CompanyController extends Controller
             'website' => $request->website,
             'location' => $request->location,
             'industry' => $request->industry,
-            'logo' => $logoPath,
+            'logo' => $logoName,
         ]);
 
-        return redirect()->route('companies.index')->with('success', 'Company created successfully');
+        return redirect()->route('companies.index')->with('success', 'Company created successfully')->with('image', $logoName); ;
     }
 
     /**
@@ -83,14 +83,12 @@ class CompanyController extends Controller
             'website' => 'nullable|url',
             'location' => 'nullable|string',
             'industry' => 'required',
-            'logo' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $logoPath = $company->logo;
-
-        if ($request->hasFile('logo')) {
-            $logoPath = $request->file('logo')->store('company_logos', 'public');
-        }
+        $logoName = time().'.'.$request->logo->extension();  
+         
+        $request->logo->move(public_path('logo'), $logoName);
 
         $company->update([
             'name' => $request->name,
@@ -98,7 +96,7 @@ class CompanyController extends Controller
             'website' => $request->website,
             'location' => $request->location,
             'industry' => $request->industry,
-            'logo' => $logoPath,
+            'logo' => $logoName,
         ]);
 
         return redirect()->route('companies.index')->with('success', 'Company updated successfully');
