@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Announcement;
+use App\Models\Company;
 use Illuminate\Http\Request;
 
 class AnnouncementController extends Controller
@@ -12,8 +13,8 @@ class AnnouncementController extends Controller
      */
     public function index()
     {
-        $announcements = Announcement::with('company')->get();
-        return view('announcements.index', compact('announcements'));
+        $announcements = Announcement::latest()->with('company')->paginate(6);
+        return view('admin.announcements.index', compact('announcements'));
     }
 
     /**
@@ -32,24 +33,25 @@ class AnnouncementController extends Controller
     {
         $request->validate([
             'title' => 'required',
+            'skills' => 'required',
             'description' => 'nullable',
             'date' => 'required|date',
             'company_id' => 'required|exists:companies,id',
-            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Add image validation rules
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+
         ]);
 
-        $imagePath = null;
+        $imageName = time() . '.' . $request->image->extension();
 
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('announcements_images', 'public');
-        }
+        $request->image->move(public_path('uploads'), $imageName);
 
         Announcement::create([
             'title' => $request->title,
+            'skills' => $request->skills,
             'description' => $request->description,
             'date' => $request->date,
             'company_id' => $request->company_id,
-            'image' => $imagePath,
+            'image' => $imageName,
         ]);
 
         return redirect()->route('announcements.index')->with('success', 'Announcement created successfully');
@@ -61,7 +63,7 @@ class AnnouncementController extends Controller
     public function show(Announcement $announcement)
     {
         $announcement->load('company');
-        return view('announcements.show', compact('announcement'));
+        return view('admin.announcements.show', compact('announcement'));
     }
 
     /**
@@ -80,24 +82,25 @@ class AnnouncementController extends Controller
     {
         $request->validate([
             'title' => 'required',
+            'skills' => 'required',
             'description' => 'nullable',
             'date' => 'required|date',
             'company_id' => 'required|exists:companies,id',
-            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Add image validation rules
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+
         ]);
 
-        $imagePath = $announcement->image;
+        $imageName = time() . '.' . $request->image->extension();
 
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('announcements_images', 'public');
-        }
+        $request->image->move(public_path('uploads'), $imageName);
 
         $announcement->update([
             'title' => $request->title,
+            'skills' => $request->skills,
             'description' => $request->description,
             'date' => $request->date,
             'company_id' => $request->company_id,
-            'image' => $imagePath,
+            'image' => $imageName,
         ]);
 
         return redirect()->route('announcements.index')->with('success', 'Announcement updated successfully');
