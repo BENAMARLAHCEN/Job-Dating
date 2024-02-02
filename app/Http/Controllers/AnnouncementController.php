@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AnnounceCompany;
 use App\Models\Announcement;
 use App\Models\Company;
+use App\Models\Skill;
 use Illuminate\Http\Request;
 
 class AnnouncementController extends Controller
@@ -13,7 +15,7 @@ class AnnouncementController extends Controller
      */
     public function index()
     {
-        $announcements = Announcement::latest()->with('company','skill')->paginate(6);
+        $announcements = Announcement::latest()->with('company', 'skill')->paginate(6);
         return view('admin.announcements.index', compact('announcements'));
     }
 
@@ -23,7 +25,8 @@ class AnnouncementController extends Controller
     public function create()
     {
         $companies = Company::all();
-        return view('admin.announcements.create', compact('companies'));
+        $skills = Skill::all();
+        return view('admin.announcements.create', compact('companies', 'skills'));
     }
 
     /**
@@ -33,26 +36,31 @@ class AnnouncementController extends Controller
     {
         $request->validate([
             'title' => 'required',
-            'skills' => 'required',
             'description' => 'nullable',
             'date' => 'required|date',
-            'company_id' => 'required|exists:companies,id',
+            'company_ids' => 'required|array',
+            'company_ids.*' => 'exists:companies,id',
+            'skill_ids' => 'nullable|array',
+            'skill_ids.*' => 'exists:skills,id',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
 
         ]);
-
         $imageName = time() . '.' . $request->image->extension();
+
+        $announcement = Announcement::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'date' => $request->date,
+            'image' => $imageName,
+        ]);
 
         $request->image->move(public_path('uploads'), $imageName);
 
-        Announcement::create([
-            'title' => $request->title,
-            'skills' => $request->skills,
-            'description' => $request->description,
-            'date' => $request->date,
-            'company_id' => $request->company_id,
-            'image' => $imageName,
-        ]);
+        $announcement->company()->attach($request->company_ids);
+
+        if ($request->has('skill_ids')) {
+            $announcement->skill()->attach($request->skill_ids);
+        }
 
         return redirect()->route('announcements.index')->with('success', 'Announcement created successfully');
     }
@@ -62,7 +70,7 @@ class AnnouncementController extends Controller
      */
     public function show(Announcement $announcement)
     {
-        $announcement->load('company');
+        $announcement->load('company')->load('skill');
         return view('admin.announcements.show', compact('announcement'));
     }
 
@@ -72,7 +80,8 @@ class AnnouncementController extends Controller
     public function edit(Announcement $announcement)
     {
         $companies = Company::all();
-        return view('admin.announcements.edit', compact('announcement', 'companies'));
+        $skills = Skill::all();
+        return view('admin.announcements.edit', compact('announcement', 'companies', 'skills'));
     }
 
     /**
@@ -84,24 +93,41 @@ class AnnouncementController extends Controller
             'title' => 'required',
             'skills' => 'required',
             'description' => 'nullable',
+            'company_ids' => 'required|array',
+            'company_ids.*' => 'exists:companies,id',
+            'skill_ids' => 'nullable|array',
+            'skill_ids.*' => 'exists:skills,id',
             'date' => 'required|date',
-            'company_id' => 'required|exists:companies,id',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
 
         ]);
 
-        $imageName = time() . '.' . $request->image->extension();
-
-        $request->image->move(public_path('uploads'), $imageName);
 
         $announcement->update([
             'title' => $request->title,
-            'skills' => $request->skills,
             'description' => $request->description,
             'date' => $request->date,
-            'company_id' => $request->company_id,
-            'image' => $imageName,
         ]);
+
+        if ($request->hasFile('image')) {
+            if ($announcement->image) {
+                unlink(public_path('uploads/' . $announcement->image));
+            }
+
+            $imageName = time() . '.' . $request->image->extension();
+            $request->image->move(public_path('uploads'), $imageName);
+            $announcement->update(['image' => $imageName]);
+        }
+
+
+        $announcement->company()->sync($request->company_ids);
+
+
+        if ($request->has('skill_ids')) {
+            $announcement->skill()->sync($request->skill_ids);
+        } else {
+            $announcement->skill()->detach();
+        }
 
         return redirect()->route('announcements.index')->with('success', 'Announcement updated successfully');
     }
