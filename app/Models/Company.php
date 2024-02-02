@@ -13,8 +13,9 @@ class Company extends Model
         'name', 'email', 'website', 'location', 'industry', 'logo',
     ];
     
+    
     public function announcements()
     {
-        return $this->hasMany(Announcement::class);
+        return $this->belongsToMany(Announcement::class,'announce_companies');
     }
 }
