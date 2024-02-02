@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('announcements', function (Blueprint $table) {
-            $table->string('skills');
+        Schema::create('announce_companies', function (Blueprint $table) {
+            $table->foreignId('company_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('announcement_id')->constrained()->cascadeOnDelete();
+            $table->timestamps();
         });
     }
 
@@ -21,8 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('announcements', function (Blueprint $table) {
-            $table->dropColumn('skills');
-        });
+        Schema::dropIfExists('announce_companies');
     }
 };

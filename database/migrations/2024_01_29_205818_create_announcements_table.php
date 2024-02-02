@@ -17,8 +17,6 @@ return new class extends Migration
             $table->string('image')->default('recherche-job.webp');
             $table->date('date');
             $table->longText('description');
-            $table->unsignedBigInteger('company_id');
-            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
             $table->timestamps();
         });
     }
