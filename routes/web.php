@@ -4,6 +4,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SkillController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,3 +30,4 @@ Route::get('/announcement/{announcement}', [AnnouncementController::class,'show'
 
 Route::resource('companies', CompanyController::class)->middleware('auth');
 Route::resource('announcements', AnnouncementController::class)->middleware('auth');
+Route::resource('skills', SkillController::class)->middleware('auth');

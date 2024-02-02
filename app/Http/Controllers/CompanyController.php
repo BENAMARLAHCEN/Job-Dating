@@ -83,12 +83,9 @@ class CompanyController extends Controller
             'website' => 'nullable|url',
             'location' => 'nullable|string',
             'industry' => 'required',
-            'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $logoName = time().'.'.$request->logo->extension();  
-         
-        $request->logo->move(public_path('logo'), $logoName);
 
         $company->update([
             'name' => $request->name,
@@ -96,8 +93,17 @@ class CompanyController extends Controller
             'website' => $request->website,
             'location' => $request->location,
             'industry' => $request->industry,
-            'logo' => $logoName,
         ]);
+
+        if ($request->hasFile('logo')) {
+            if ($company->logo) {
+                unlink(public_path('logo/' . $company->logo));
+            }
+
+            $logoName = time() . '.' . $request->logo->extension();
+            $request->logo->move(public_path('logo'), $logoName);
+            $company->update(['logo' => $logoName]);
+        }
 
         return redirect()->route('companies.index')->with('success', 'Company updated successfully');
     }
