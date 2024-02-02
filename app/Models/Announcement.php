@@ -18,6 +18,11 @@ class Announcement extends Model
         return $this->belongsTo(Company::class);
     }
 
+    public function skill()
+    {
+        return $this->belongsToMany(Skill::class, 'announce_skills');
+    }
+
     public function scopeFilter($query, array $filters) {
         if($filters['skill'] ?? false) {
             $query->where('skills', 'like', '%' . request('skill') . '%');
