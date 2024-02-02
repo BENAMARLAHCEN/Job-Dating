@@ -19,10 +19,8 @@ class AnnouncementFactory extends Factory
     {
         return [
             'title' => $this->faker->sentence(),
-            'skills' => $this->faker->sentence(),
             'description' => $this->faker->paragraph(5),
             'date' => $this->faker->date(),
-            'company_id' => Company::factory()->create()->id,
         ];
     }
 }
