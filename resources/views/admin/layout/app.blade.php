@@ -34,6 +34,9 @@
             Announcements
           </a>
         </li>
+        <li>
+          <a href="{{route('skills.index')}}">Skills</a>
+        </li>
         
       </ul>
     </aside>

@@ -8,7 +8,7 @@
                     <a href="/announcement/{{$announcement->id}}">{{$announcement->title}}</a>
                 </h3>
                 <div class="text-xl font-bold mb-4">{{$announcement->company->name}}</div>
-                <x-skills :skillsCsv="$announcement->skills"/>
+                <x-skills :skills="$announcement->skill"/>
 
                 <div class="text-lg mt-4">
                     <i class="fa-solid fa-location-dot"></i> {{$announcement->company->location}}

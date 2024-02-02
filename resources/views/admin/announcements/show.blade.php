@@ -18,7 +18,7 @@
 
                         <h3 class="text-2xl mb-2">{{$announcement->title}}</h3>
                         <div class="text-xl font-bold mb-4">{{$announcement->company->name}}</div>
-                        <x-skills :skillsCsv="$announcement->skills"/>
+                        <x-skills :skills="$announcement->skill"/>
 
                         <div class="text-lg mt-2">
                             <i class="fa-solid fa-location-dot"></i> {{$announcement->company->location}}

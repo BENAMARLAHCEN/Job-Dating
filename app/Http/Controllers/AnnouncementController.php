@@ -13,7 +13,7 @@ class AnnouncementController extends Controller
      */
     public function index()
     {
-        $announcements = Announcement::latest()->with('company')->paginate(6);
+        $announcements = Announcement::latest()->with('company','skill')->paginate(6);
         return view('admin.announcements.index', compact('announcements'));
     }
 
