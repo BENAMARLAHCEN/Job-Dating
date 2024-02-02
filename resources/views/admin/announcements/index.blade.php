@@ -27,24 +27,29 @@
                                 style="width: 100px; height: 80px" class="" />
                             <div class="ms-3">
                                 <p class="fw-bold mb-1">{{ $announcement->title }}</p>
-                                <p class="text-muted mb-0">{{ $announcement->company->name }}</p>
+                                <p class="text-muted mb-0">
+                                    @foreach ($announcement->company as $company)
+                                        {{ $company->name }}
+                                    @endforeach
+                                </p>
                             </div>
                         </div>
                     </td>
                     <td>
                         <p class="fw-normal mb-1">{{ $announcement->date }}</p>
                     </td>
-                     <td>
-                        @foreach ($announcement->skill as $skill) 
-                            {{$skill->name}}
+                    <td>
+                        @foreach ($announcement->skill as $skill)
+                            {{ $skill->name }}
                         @endforeach
                     </td>
                     <td class=" text-overflow">
                         {{ $announcement->description }}
                     </td>
-                    
+
                     <td>
-                        <a href="{{ route('announcements.edit', $announcement->id) }}" class="btn btn-warning btn-sm btn-rounded">
+                        <a href="{{ route('announcements.edit', $announcement->id) }}"
+                            class="btn btn-warning btn-sm btn-rounded">
                             Edit
                         </a>
                         <form action="{{ route('announcements.destroy', $announcement->id) }}" method="post">
@@ -60,6 +65,6 @@
         </tbody>
     </table>
     <div class="mt-3 p-2">
-        {{$announcements->links('pagination::bootstrap-5')}}
+        {{ $announcements->links('pagination::bootstrap-5') }}
     </div>
 @endsection

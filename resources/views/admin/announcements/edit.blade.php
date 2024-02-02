@@ -22,9 +22,11 @@
         @csrf
         <div class="mb-3">
             <label for="company" class="form-label">Company Name</label>
-            <select name="company_id" class="form-select">
+            <select class="form-select" name="company_ids[]" id="multiple-select-field" data-placeholder="Company" multiple>
                 @foreach ($companies as $company)
-                    <option value="{{ $company->id }}">{{ $company->name }}</option>
+                    <option value="{{ $company->id }}"
+                        {{ in_array($company->id, $announcement->company->pluck('id')->toArray()) ? 'selected' : '' }}>
+                        {{ $company->name }}</option>
                 @endforeach
             </select>
         </div>
@@ -41,8 +43,15 @@
 
         <div class="mb-3">
             <label for="skills" class="form-label">Skills (Comma Separated)</label>
-            <input type="text" class="form-control" name="skills" value="{{ $announcement->skills }}"
-                placeholder="Example: Laravel, Backend, Postgres, etc">
+            <select class="form-select" name="skill_ids[]" id="multiple-select-field-skills" data-placeholder="Company"
+                multiple>
+
+                @foreach ($skills as $skill)
+                    <option value="{{ $skill->id }}"
+                        {{ in_array($skill->id, $announcement->skill->pluck('id')->toArray()) ? 'selected' : '' }}>
+                        {{ $skill->name }}</option>
+                @endforeach
+            </select>
         </div>
 
         <div class="mb-3">
@@ -61,4 +70,30 @@
             <a href="/" class="btn btn-secondary ml-4">Back</a>
         </div>
     </form>
+    <script>
+        $(document).ready(function() {
+
+            $('#multiple-select-field').select2({
+                theme: "bootstrap-5",
+                width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' :
+                    'style',
+                placeholder: $(this).data('placeholder'),
+                closeOnSelect: false,
+            });
+
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+
+            $('#multiple-select-field-skills').select2({
+                theme: "bootstrap-5",
+                width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' :
+                    'style',
+                placeholder: $(this).data('placeholder'),
+                closeOnSelect: false,
+            });
+
+        });
+    </script>
 @endsection
