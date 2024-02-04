@@ -23,6 +23,21 @@ class Announcement extends Model
         return $this->belongsToMany(Skill::class, 'announce_skills');
     }
 
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
+    }
+
+    public function hasUserRecordedAttendance($userId)
+    {
+        return $this->attendances()->where('user_id', $userId)->exists();
+    }
+
+    public function unrecordAttendance($userId)
+    {
+        $this->attendances()->where('user_id', $userId)->delete();
+    }
+
     // public function scopeFilter($query, array $filters) {
     //     if($filters['skill'] ?? false) {
     //         $query->where('skills', 'like', '%' . request('skill') . '%');
@@ -37,7 +52,7 @@ class Announcement extends Model
     public function scopeFilter($query, array $filters)
 {
     if ($filters['skill'] ?? false) {
-        $query->whereHas('skills', function ($subQuery) {
+        $query->whereHas('skill', function ($subQuery) {
             $subQuery->where('name', 'like', '%' . request('skill') . '%');
         });
     }
@@ -47,7 +62,7 @@ class Announcement extends Model
             $searchTerm = '%' . request('search') . '%';
             $subQuery->where('title', 'like', $searchTerm)
                 ->orWhere('description', 'like', $searchTerm)
-                ->orWhereHas('skills', function ($subSubQuery) use ($searchTerm) {
+                ->orWhereHas('skill', function ($subSubQuery) use ($searchTerm) {
                     $subSubQuery->where('name', 'like', $searchTerm);
                 });
         });
