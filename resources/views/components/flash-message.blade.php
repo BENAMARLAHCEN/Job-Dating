@@ -1,5 +1,3 @@
-@props(['flash-message'])
-
 @if (session()->has('message'))
 <div id="alertMessage" class="fixed top-0 left-1/2 transform -translate-x-1/2 bg-laravel text-white px-48 py-3">
     <p class="inline-block mr-4">
