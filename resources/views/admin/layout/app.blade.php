@@ -48,6 +48,9 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('attendances.index') }}">Attendances</a>
+                </li>
+                <li>
                     <a href="{{ route('skills.index') }}">Skills</a>
                 </li>
 
