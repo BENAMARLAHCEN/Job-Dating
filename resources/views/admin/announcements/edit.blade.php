@@ -18,8 +18,9 @@
         </div>
     @endif
 
-    <form action="{{ route('announcements.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('announcements.update',$announcement->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
+        @method('PUT')
         <div class="mb-3">
             <label for="company" class="form-label">Company Name</label>
             <select class="form-select" name="company_ids[]" id="multiple-select-field" data-placeholder="Company" multiple>

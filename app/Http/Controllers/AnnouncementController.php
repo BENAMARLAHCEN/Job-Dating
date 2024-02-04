@@ -15,7 +15,7 @@ class AnnouncementController extends Controller
      */
     public function index()
     {
-        $announcements = Announcement::latest()->with('company', 'skill')->paginate(6);
+        $announcements = Announcement::latest()->with('company','skill','attendances')->paginate(6);
         return view('admin.announcements.index', compact('announcements'));
     }
 
@@ -91,7 +91,6 @@ class AnnouncementController extends Controller
     {
         $request->validate([
             'title' => 'required',
-            'skills' => 'required',
             'description' => 'nullable',
             'company_ids' => 'required|array',
             'company_ids.*' => 'exists:companies,id',
