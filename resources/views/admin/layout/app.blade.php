@@ -53,6 +53,12 @@
                 <li>
                     <a href="{{ route('skills.index') }}">Skills</a>
                 </li>
+                <li>
+                    <a href="{{ route('roles.index') }}">Roles</a>
+                </li>
+                <li>
+                    <a href="{{ route('users.index') }}">Users</a>
+                </li>
 
             </ul>
         </aside>
