@@ -10,6 +10,8 @@ use App\Models\AnnounceSkill;
 use App\Models\Company;
 use App\Models\Skill;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class DatabaseSeeder extends Seeder
 {
@@ -25,6 +27,14 @@ class DatabaseSeeder extends Seeder
         AnnounceSkill::factory(90)->create();
         AnnounceCompany::factory(70)->create();
 
+
+        Role::create(['name' => 'admin'],['name' => 'learner']);
+
+        Permission::create(['name' => 'edit skills']);
+        Permission::create([ 'name' => 'view users']);
+        Permission::create(['name' => 'create users']);
+        Permission::create(['name' => 'edit users']);
+        Permission::create(['name' => 'delete users']);
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
