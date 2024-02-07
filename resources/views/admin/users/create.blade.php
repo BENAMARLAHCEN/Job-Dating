@@ -36,6 +36,15 @@
         </div>
 
         <div class="mb-3">
+            <label for="skills" class="form-label">Skills</label>
+            <select class="form-select" name="skills[]" id="multiple-select-field-skills" data-placeholder="Company" multiple>
+                @foreach ($skills as $skill)
+                    <option value="{{ $skill->id }}">{{ $skill->name }}</option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="mb-3">
             <label for="image" class="form-label">User Image</label>
             <input type="file" class="form-control" name="image">
             @error('image')
@@ -59,4 +68,18 @@
             <a href="/" class="btn btn-secondary ml-4">Back</a>
         </div>
     </form>
+
+    <script>
+        $(document).ready(function() {
+    
+            $('#multiple-select-field-skills').select2({
+                theme: "bootstrap-5",
+                width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' :
+                    'style',
+                placeholder: $(this).data('placeholder'),
+                closeOnSelect: false,
+            });
+    
+        });
+    </script>
 @endsection

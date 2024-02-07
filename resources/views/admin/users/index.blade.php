@@ -36,7 +36,10 @@
                     {{ $user->email }}
                 </td>
                 <td>
-                    {{ $user->getRoleNames()[0] ?? '' }}
+                    @foreach ($user->roles as $item)
+                        {{ $item->name.'' }}
+                    @endforeach
+                    {{-- {{ $user->roles[0]->name ?? '' }} --}}
                 </td>
                 <td>
                     @foreach ($user->getAllPermissions() as $item)
@@ -64,3 +67,4 @@
 </div>
 
 @endsection
+
