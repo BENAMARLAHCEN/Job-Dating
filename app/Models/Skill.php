@@ -14,8 +14,14 @@ class Skill extends Model
     ];
 
 
-    public function announcements()
+
+    public function users()
     {
-        return $this->belongsToMany(Announcement::class, 'announce_skills');
+        return $this->morphedByMany(User::class, 'model_has_skills');
+    }
+
+    public function announcement()
+    {
+        return $this->morphedByMany(Announcement::class, 'model_has_skills');
     }
 }

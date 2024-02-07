@@ -56,4 +56,8 @@ class User extends Authenticatable
         return $this->hasMany(Attendance::class);
     }
     
+    public function skills()
+    {
+        return $this->morphToMany(Skill::class, 'model_has_skills');
+    }
 }

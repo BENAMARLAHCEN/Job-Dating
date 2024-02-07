@@ -18,9 +18,10 @@ class Announcement extends Model
         return $this->belongsToMany(Company::class,'announce_companies');
     }
 
-    public function skill()
+
+    public function skills()
     {
-        return $this->belongsToMany(Skill::class, 'announce_skills');
+        return $this->morphToMany(Skill::class, 'model_has_skills');
     }
 
     public function attendances()
@@ -38,17 +39,7 @@ class Announcement extends Model
         $this->attendances()->where('user_id', $userId)->delete();
     }
 
-    // public function scopeFilter($query, array $filters) {
-    //     if($filters['skill'] ?? false) {
-    //         $query->where('skills', 'like', '%' . request('skill') . '%');
-    //     }
 
-    //     if($filters['search'] ?? false) {
-    //         $query->where('title', 'like', '%' . request('search') . '%')
-    //             ->orWhere('description', 'like', '%' . request('search') . '%')
-    //             ->orWhere('skills.name', 'like', '%' . request('search') . '%');
-    //     }
-    // }
     public function scopeFilter($query, array $filters)
 {
     if ($filters['skill'] ?? false) {
