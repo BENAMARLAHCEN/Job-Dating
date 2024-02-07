@@ -49,7 +49,7 @@
 
                 @foreach ($skills as $skill)
                     <option value="{{ $skill->id }}"
-                        {{ in_array($skill->id, $announcement->skill->pluck('id')->toArray()) ? 'selected' : '' }}>
+                        {{ in_array($skill->id, $announcement->skills->pluck('id')->toArray()) ? 'selected' : '' }}>
                         {{ $skill->name }}</option>
                 @endforeach
             </select>

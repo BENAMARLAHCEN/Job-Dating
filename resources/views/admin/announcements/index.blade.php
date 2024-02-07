@@ -61,7 +61,7 @@
                         <p class="fw-normal mb-1">{{ $announcement->date }}</p>
                     </td>
                     <td class=" text-overflow">
-                        @foreach ($announcement->skill as $skill)
+                        @foreach ($announcement->skills as $skill)
                             {{ $skill->name }}
                         @endforeach
                     </td>

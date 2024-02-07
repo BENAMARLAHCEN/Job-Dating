@@ -8,7 +8,7 @@
             </h3>
             <div class="text-xl font-bold mb-4"> <x-company :companies="$announcement->company" />
             </div>
-            <x-skills :skills="$announcement->skill" />
+            <x-skills :skills="$announcement->skills" />
 
             <div class="text-lg mt-4">
                 <i class="fa-solid fa-location-dot"></i> 

@@ -21,20 +21,20 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // \App\Models\User::factory(10)->create();
-        Company::factory(10)->create();
-        Announcement::factory(40)->create();
-        Skill::factory(40)->create();
-        AnnounceSkill::factory(90)->create();
-        AnnounceCompany::factory(70)->create();
+        // Company::factory(10)->create();
+        // Announcement::factory(40)->create();
+        // Skill::factory(40)->create();
+        // AnnounceSkill::factory(90)->create();
+        // AnnounceCompany::factory(70)->create();
 
 
-        Role::create(['name' => 'admin'],['name' => 'learner']);
+        Role::create(['name' => 'user']);
 
-        Permission::create(['name' => 'edit skills']);
-        Permission::create([ 'name' => 'view users']);
-        Permission::create(['name' => 'create users']);
-        Permission::create(['name' => 'edit users']);
-        Permission::create(['name' => 'delete users']);
+        // Permission::create(['name' => 'edit skills']);
+        // Permission::create([ 'name' => 'view users']);
+        // Permission::create(['name' => 'create users']);
+        // Permission::create(['name' => 'edit users']);
+        // Permission::create(['name' => 'delete users']);
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
