@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Skill;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -25,7 +26,8 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::all();
-        return view('admin.users.create', compact('roles'));
+        $skills = Skill::all(); 
+        return view('admin.users.create', compact('roles', 'skills'));
     }
 
     /**
@@ -37,6 +39,8 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6',
+            'skill_ids' => 'nullable|array',
+            'skill_ids.*' => 'exists:skills,id',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'role' => ['required', Rule::in(Role::pluck('name')->toArray())],
         ]);
@@ -49,12 +53,15 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
             'image' => $imageName,
         ]);
-        
+
         $request->image->move(public_path('images'), $imageName);
 
 
         $role = $request->input('role');
         $user->assignRole($role);
+
+        $skills = $request->input('skills');
+        $user->skills()->sync($skills);
 
         return redirect()->route('users.index')->with('success', 'User created successfully');
     }
@@ -73,7 +80,8 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $roles = Role::all();
-        return view('admin.users.edit', compact('user', 'roles'));
+        $skills = Skill::all(); 
+        return view('admin.users.edit', compact('user', 'roles', 'skills'));
     }
 
     /**
@@ -85,6 +93,8 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'password' => 'nullable|min:6',
+            'skill_ids' => 'nullable|array',
+            'skill_ids.*' => 'exists:skills,id',
             'role' => ['required', Rule::in(Role::pluck('name')->toArray())],
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
@@ -97,6 +107,10 @@ class UserController extends Controller
 
         $role = $request->input('role');
         $user->syncRoles([$role]);
+
+        // Sync skills...
+        $skills = $request->input('skills');
+        $user->skills()->sync($skills);
 
         if ($request->hasFile('image')) {
             $imageName = time() . '.' . $request->image->extension();

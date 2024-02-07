@@ -58,9 +58,11 @@ class AnnouncementController extends Controller
 
         $announcement->company()->attach($request->company_ids);
 
-        if ($request->has('skill_ids')) {
-            $announcement->skill()->attach($request->skill_ids);
-        }
+        // if ($request->has('skill_ids')) {
+        //     $announcement->skills()->attach($request->skill_ids);
+        // }
+        $skills = $request->input('skill_ids');
+        $announcement->skills()->sync($skills);
 
         return redirect()->route('announcements.index')->with('success', 'Announcement created successfully');
     }
@@ -122,11 +124,8 @@ class AnnouncementController extends Controller
         $announcement->company()->sync($request->company_ids);
 
 
-        if ($request->has('skill_ids')) {
-            $announcement->skill()->sync($request->skill_ids);
-        } else {
-            $announcement->skill()->detach();
-        }
+        $skills = $request->input('skill_ids');
+        $announcement->skills()->sync($skills);
 
         return redirect()->route('announcements.index')->with('success', 'Announcement updated successfully');
     }
