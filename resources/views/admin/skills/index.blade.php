@@ -1,10 +1,6 @@
 @extends('admin/layout/app')
 @section('content')
-@if ($message = Session::get('success'))
-<div class="alert alert-success">
-    <p>{{ $message }}</p>
-</div>
-@endif
+  
 
     <a href="{{ route('skills.create') }}" class="btn btn-primary">add</a>
 
@@ -29,25 +25,24 @@
                     <td>
                         {{ $skill->updated_at }}
                     </td>
-                    
+
                     <td>
-                        <a href="{{route('skills.edit',$skill->id)}}" class="btn btn-sm btn-rounded">
+                        <a href="{{ route('skills.edit', $skill->id) }}" class="btn btn-sm btn-rounded">
                             Edit
                         </a>
-                        <form action="{{route('skills.destroy',$skill->id)}}" method="post">
+                        <form action="{{ route('skills.destroy', $skill->id) }}" method="post">
                             @csrf
                             @method('DELETE')
-                        <button type="submit" class="btn btn-sm btn-rounded btn-danger">
-                            Delete
-                        </button></form>
+                            <button type="submit" class="btn btn-sm btn-rounded btn-danger">
+                                Delete
+                            </button>
+                        </form>
                     </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
     <div class="mt-3 p-2">
-        {{$skills->links('pagination::bootstrap-5')}}
+        {{ $skills->links('pagination::bootstrap-5') }}
     </div>
-
-
 @endsection

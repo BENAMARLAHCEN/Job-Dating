@@ -20,6 +20,7 @@
     <!-- Or for RTL support -->
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
 
 </head>
@@ -88,8 +89,28 @@
             </div>
         </nav>
         <!-- Navbar -->
-
+        {{-- success message --}}
+        @if ($message = Session::get('success'))
+            <script>
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                Toast.fire({
+                    icon: "success",
+                    title: "{{ $message }}",
+                });
+            </script>
+        @endif
         <!-- Page Content -->
+
         <div id="page-content-wrapper">
             <div class="container-fluid">
 
