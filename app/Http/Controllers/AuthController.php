@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -42,9 +43,14 @@ class AuthController extends Controller
             'password' => 'required|confirmed|min:6'
         ]);
 
-        $formFields['password'] = bcrypt($formFields['password']);
+        $formFields['password'] = hash('sha256', $formFields['password']);
 
         $user = User::create($formFields);
+
+        Profile::create([
+            'user_id' => $user->id,
+        ]);
+        
         $user->assignRole('user');
 
         auth()->login($user);

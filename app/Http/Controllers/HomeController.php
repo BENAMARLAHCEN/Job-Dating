@@ -10,7 +10,7 @@ class HomeController extends Controller
     public function index()
     {
         
-        $announcements = Announcement::with('company','skill')->latest()->filter(request(['skill', 'search']))->paginate(6);
+        $announcements = Announcement::with('company','skills')->latest()->filter(request(['skill', 'search']))->paginate(6);
         return view('index', compact('announcements'));
     }
 }
