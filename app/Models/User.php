@@ -55,9 +55,17 @@ class User extends Authenticatable
     {
         return $this->hasMany(Attendance::class);
     }
-    
+
     public function skills()
     {
         return $this->morphToMany(Skill::class, 'model_has_skills');
+    }
+    // public function skills()
+    // {
+    //     return $this->morphToMany(Skill::class, 'model_has_skills', 'model_has_skills', 'model_id', 'skill_id');
+    // }
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
     }
 }
