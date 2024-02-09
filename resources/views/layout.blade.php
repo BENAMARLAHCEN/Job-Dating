@@ -22,7 +22,9 @@
             },
         };
     </script>
-    <title>LaraGigs | Find Laravel Jobs & Projects</title>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <title>JobDating | Find Jobs & Projects</title>
 </head>
 
 <body class="">
@@ -43,9 +45,15 @@
                         Welcome {{ auth()->user()->name }}
                     </span>
                 </li>
-                <li>
-                    <a href="/companies" class="hover:text-laravel"><i class="fa-solid fa-gear"></i> Manage</a>
-                </li>
+                @if (Auth::user()->hasRole('admin','cme'))
+                    <li>
+                        <a href="/companies" class="hover:text-laravel"><i class="fa-solid fa-gear"></i> Manage</a>
+                    </li>
+                    @else
+                    <li>
+                        <a href="/profile" class="hover:text-laravel"><i class="fa-solid fa-gear"></i> Profile</a>
+                    </li>
+                @endif
                 <li>
                     <form class="inline" method="POST" action="/logout">
                         @csrf
