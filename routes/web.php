@@ -7,6 +7,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SkillController;
+use App\Http\Controllers\User\ProfileController;
+use App\Http\Controllers\User\UserSkillsController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,7 +34,7 @@ Route::get('/announcement/{announcement}', [AnnouncementController::class, 'show
 
 
 Route::resource('companies', CompanyController::class)->middleware('auth');
-Route::resource('announcements', AnnouncementController::class)->middleware('auth');
+Route::resource('announcements', AnnouncementController::class)->except('show')->middleware(['role:admin']);
 Route::resource('skills', SkillController::class)->middleware('auth');
 Route::resource('roles', RoleController::class)->middleware('auth');
 Route::resource('users', UserController::class)->middleware('auth');
@@ -45,10 +47,17 @@ Route::delete('/announcements/{announcement}/unrecord-attendance', [AttendanceCo
     ->middleware('auth')
     ->name('announcements.unrecordAttendance');
 
-    Route::get('/attendances', [AttendanceController::class, 'index'])
+Route::get('/attendances', [AttendanceController::class, 'index'])
     ->middleware('auth')
     ->name('attendances.index');
-    Route::delete('/attendances/{attendance}', [AttendanceController::class, 'destroy'])
+Route::delete('/attendances/{attendance}', [AttendanceController::class, 'destroy'])
     ->middleware('auth')
     ->name('attendances.destroy');
-    
+
+Route::get('/profile',[ProfileController::class,'index']);
+Route::put('/profile/update',[ProfileController::class,'update'])->name('profile.update');
+Route::get('/profile/edit',[ProfileController::class,'edit'])->name('profile.edit');
+Route::put('/profile/update-password', [UserController::class, 'updatePassword'])->name('profile.updatePassword');
+Route::delete('/user/skills/{skill}', [UserSkillsController::class,'deleteSkill'])->name('user.skills.delete');
+Route::post('/user/skills/add', [UserSkillsController::class,'storeSkills'])->name('user.skills.store');
+
