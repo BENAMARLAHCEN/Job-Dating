@@ -45,7 +45,7 @@
                         Welcome {{ auth()->user()->name }}
                     </span>
                 </li>
-                @if (Auth::user()->hasRole('admin','cme'))
+                @if (Auth::user()->hasRole('admin'))
                     <li>
                         <a href="/companies" class="hover:text-laravel"><i class="fa-solid fa-gear"></i> Manage</a>
                     </li>

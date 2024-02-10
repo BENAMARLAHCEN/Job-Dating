@@ -48,9 +48,12 @@
                         Announcements
                     </a>
                 </li>
+                @haspermission('view attendance')
                 <li>
                     <a href="{{ route('attendances.index') }}">Attendances</a>
                 </li>
+                @endhaspermission
+
                 <li>
                     <a href="{{ route('skills.index') }}">Skills</a>
                 </li>
@@ -76,13 +79,17 @@
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-icon pe-md-0 position-relative " data-bs-toggle="dropdown">
-                            <img src="{{ asset('images/lahcen.JPG') }}" alt="icon" style="max-width: 2.5rem;"
+                            <img src="{{ asset('images/'.auth()->user()->image) }}" alt="icon" style="max-width: 2.5rem;"
                                 class="rounded-circle">
                         </a>
                         <div class="dropdown-menu dropdown-menu-end position-absolute">
-                            <a class="dropdown-item" href="profile.php">Profile</a>
-                            <a class="dropdown-item" href="profile.php">Account Setting</a>
-                            <a class="dropdown-item" href="include/logout.php">Log out</a>
+                            <a class="dropdown-item" href="/profile">Profile</a>
+                            <form class="inline" method="POST" action="/logout">
+                                @csrf
+                                <button type="submit" class="dropdown-item">
+                                    Logout
+                                </button>
+                            </form>
                         </div>
                     </li>
                 </ul>
