@@ -14,13 +14,16 @@
                 <i class="fa-solid fa-location-dot"></i>
                 <i class="fa-solid fa-date-dot"></i> {{ $announcement->date }}
             </div>
-                <div>
-                    <h3>{{ $announcement->title }}</h3>
-                    <p>Matching Percentage: {{ $announcement->matchingPercentage }}%</p>
-                    @if ($announcement->matchingPercentage >= 50)
-                        <p>Congratulations! You are qualified for this announcement.</p>
-                    @endif
-                </div>
+            <div>
+                @auth
+                    @hasrole('learner')
+                        <p>Matching Percentage: {{ $announcement->matchingPercentage }}%</p>
+                        @if ($announcement->matchingPercentage >= 50)
+                            <p>Congratulations! You are qualified for this announcement.</p>
+                        @endif
+                    @endhasrole
+                @endauth
+            </div>
         </div>
     </div>
 </div>
