@@ -35,35 +35,48 @@
         <aside id="sidebar-wrapper">
             <ul class="sidebar-nav">
                 <li class="sidebar-brand">
-                    <a href="{{ route('companies.index') }}">
+                    <a href="/">
                         JobDating
                     </a>
                 </li>
+                @can('access dashboard')
+                    <li>
+                        <a href="{{ route('statistic') }}">Statistic</a>
+                    </li>
+                @endcan
+                @can('view companies')
+                    <li>
+                        <a href="{{ route('companies.index') }}">Companies</a>
+                    </li>
+                @endcan
+                @can('view announcements')
+                    <li>
+                        <a href="{{ route('announcements.index') }}">
+                            Announcements
+                        </a>
+                    </li>
+                @endcan
+                @can('view attendances')
+                    <li>
+                        <a href="{{ route('attendances.index') }}">Attendances</a>
+                    </li>
+                @endcan
+                @can('view skills')
+                    <li>
+                        <a href="{{ route('skills.index') }}">Skills</a>
+                    </li>
+                @endcan
 
-                <li>
-                    <a href="{{ route('companies.index') }}">Companies</a>
-                </li>
-                <li>
-                    <a href="{{ route('announcements.index') }}">
-                        Announcements
-                    </a>
-                </li>
-                @haspermission('view attendance')
-                <li>
-                    <a href="{{ route('attendances.index') }}">Attendances</a>
-                </li>
-                @endhaspermission
-
-                <li>
-                    <a href="{{ route('skills.index') }}">Skills</a>
-                </li>
-                <li>
-                    <a href="{{ route('roles.index') }}">Roles</a>
-                </li>
-                <li>
-                    <a href="{{ route('users.index') }}">Users</a>
-                </li>
-
+                @can('view roles')
+                    <li>
+                        <a href="{{ route('roles.index') }}">Roles</a>
+                    </li>
+                @endcan
+                @can('view users')
+                    <li>
+                        <a href="{{ route('users.index') }}">Users</a>
+                    </li>
+                @endcan
             </ul>
         </aside>
         <!-- /#sidebar-wrapper -->
@@ -79,8 +92,8 @@
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-icon pe-md-0 position-relative " data-bs-toggle="dropdown">
-                            <img src="{{ asset('images/'.auth()->user()->image) }}" alt="icon" style="max-width: 2.5rem;"
-                                class="rounded-circle">
+                            <img src="{{ asset('images/' . auth()->user()->image) }}" alt="icon"
+                                style="max-width: 2.5rem;" class="rounded-circle">
                         </a>
                         <div class="dropdown-menu dropdown-menu-end position-absolute">
                             <a class="dropdown-item" href="/profile">Profile</a>

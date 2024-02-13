@@ -51,7 +51,7 @@ class AuthController extends Controller
             'user_id' => $user->id,
         ]);
         
-        $user->assignRole('user');
+        $user->assignRole('learner');
 
         auth()->login($user);
 

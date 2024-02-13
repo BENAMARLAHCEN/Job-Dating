@@ -37,7 +37,7 @@
                     @endforeach
                     {{-- {{ $user->roles[0]->name ?? '' }} --}}
                 </td>
-                <td>
+                <td class="text-overflow">
                     @foreach ($user->getAllPermissions() as $item)
                         {{ $item->name.',' }}
                     @endforeach

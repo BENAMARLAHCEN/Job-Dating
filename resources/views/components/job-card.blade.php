@@ -11,8 +11,8 @@
             <x-skills :skills="$announcement->skills" />
 
             <div class="text-lg mt-4">
-                <i class="fa-solid fa-location-dot"></i>
-                <i class="fa-solid fa-date-dot"></i> {{ $announcement->date }}
+                <i class="fa-solid fa-location-dot"></i>{{ $announcement->location }}
+                <i class="fa-solid fa-clock"></i> {{ \Carbon\Carbon::create( $announcement->date)->diffForHumans() }}
             </div>
             <div>
                 @auth
