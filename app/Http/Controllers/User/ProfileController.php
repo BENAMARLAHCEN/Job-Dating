@@ -7,8 +7,6 @@ use App\Models\Announcement;
 use App\Models\Skill;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
@@ -17,13 +15,12 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        $skills = Skill::get();
         $user = User::find(auth()->id());
         $announcements = Announcement::whereHas('attendances', function ($query) use ($user) {
             $query->where('user_id', $user->id);
         })->paginate(10);
 
-        return view('profile.index', compact('user', 'announcements', 'skills'));
+        return view('profile.index', compact('user', 'announcements'));
     }
 
     /**
@@ -41,14 +38,19 @@ class ProfileController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(User $user)
     {
-        //
+        $announcements = Announcement::whereHas('attendances', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })->paginate(10);
+
+        return view('profile.index', compact('user', 'announcements'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
+
     public function edit()
     {
         $skills = Skill::get();
