@@ -9,6 +9,7 @@
         <thead class="bg-light">
             <tr>
                 <th>Title</th>
+                <th>Date</th>
                 <th>Location</th>
                 <th>Skills</th>
                 <th>Description</th>
@@ -38,6 +39,9 @@
                     </td>
                     <td>
                         <p class="fw-normal mb-1">{{ $announcement->date }}</p>
+                    </td>
+                    <td>
+                        <p class="fw-normal mb-1">{{ $announcement->location }}</p>
                     </td>
                     <td class=" text-overflow">
                         @foreach ($announcement->skills as $skill)

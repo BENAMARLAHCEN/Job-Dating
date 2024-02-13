@@ -40,7 +40,11 @@
             <label for="date" class="form-label">Date</label>
             <input type="date" class="form-control" name="date">
         </div>
-
+        <div class="mb-3">
+            <label for="location" class="form-label">Location</label>
+            <input type="text" class="form-control" name="location" value="{{old('location')}}" placeholder="Example: Remote, Boston MA, etc">
+        </div>
+        
         <div class="mb-3">
             <label for="skills" class="form-label">Skills</label>
             <select class="form-select" name="skill_ids[]" id="multiple-select-field-skills" data-placeholder="Company" multiple>
