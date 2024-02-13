@@ -10,7 +10,7 @@ class Announcement extends Model
     use HasFactory;
     
     protected $fillable = [
-        'title', 'description', 'date','image',
+        'title', 'description', 'date','image','location',
     ];
 
     public function company()
@@ -43,8 +43,8 @@ class Announcement extends Model
     public function scopeFilter($query, array $filters)
 {
     if ($filters['skill'] ?? false) {
-        $query->whereHas('skill', function ($subQuery) {
-            $subQuery->where('name', 'like', '%' . request('skill') . '%');
+        $query->whereHas('skills', function ($subQuery) {
+            $subQuery->where('name', 'like', '%' . request('skills') . '%');
         });
     }
 
@@ -53,7 +53,7 @@ class Announcement extends Model
             $searchTerm = '%' . request('search') . '%';
             $subQuery->where('title', 'like', $searchTerm)
                 ->orWhere('description', 'like', $searchTerm)
-                ->orWhereHas('skill', function ($subSubQuery) use ($searchTerm) {
+                ->orWhereHas('skills', function ($subSubQuery) use ($searchTerm) {
                     $subSubQuery->where('name', 'like', $searchTerm);
                 });
         });

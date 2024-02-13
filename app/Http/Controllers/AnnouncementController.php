@@ -38,6 +38,7 @@ class AnnouncementController extends Controller
             'title' => 'required',
             'description' => 'nullable',
             'date' => 'required|date',
+            'location' => 'required|string',
             'company_ids' => 'required|array',
             'company_ids.*' => 'exists:companies,id',
             'skill_ids' => 'nullable|array',
@@ -51,6 +52,7 @@ class AnnouncementController extends Controller
             'title' => $request->title,
             'description' => $request->description,
             'date' => $request->date,
+            'location' => $request->location,
             'image' => $imageName,
         ]);
 
@@ -99,6 +101,7 @@ class AnnouncementController extends Controller
             'skill_ids' => 'nullable|array',
             'skill_ids.*' => 'exists:skills,id',
             'date' => 'required|date',
+            'location' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
 
         ]);
@@ -108,6 +111,7 @@ class AnnouncementController extends Controller
             'title' => $request->title,
             'description' => $request->description,
             'date' => $request->date,
+            'location' => $request->location,
         ]);
 
         if ($request->hasFile('image')) {

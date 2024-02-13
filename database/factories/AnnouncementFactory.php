@@ -21,6 +21,7 @@ class AnnouncementFactory extends Factory
             'title' => $this->faker->sentence(),
             'description' => $this->faker->paragraph(5),
             'date' => $this->faker->date(),
+            'location' => $this->faker->address(),
         ];
     }
 }
